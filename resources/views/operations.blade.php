@@ -89,27 +89,17 @@
             <a href="/api/operations/recettes">Vos recettes</a>
             <a href="/api/operations/paiements">Paiements</a>
             <a href="/api/operations/ajout_paiment">Ajout_paiment</a>
-            <?php
+            <a href="/api/operations/releve"> Relevé d'identité bancaire</a>
 
-              if($data->rib == null){
-                  echo "
-                  <div class='top-right'>
-                  <form action='/api/operations_rib' method='post'>
-                  <input type='text' name='rib'> <input type='submit'> </form> </div>";
-              } else {
-                  echo "<p class='top-right'>Votre RIB - " ;
-                  echo $data->rib;
-                  echo "</p>";
-              };
-
-            ?>
             <br>
         </p>
 
     </div>
 
 </div>
+</div>
 
+<a class="top-right" href="/disconnect"> disconnect</a>
 </body>
 
 

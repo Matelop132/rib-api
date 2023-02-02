@@ -56,22 +56,21 @@ class UnixTimeGenerator implements TimeGeneratorInterface
     private static array $seedParts;
 
     public function __construct(
-        private readonly RandomGeneratorInterface $randomGenerator,
-        private readonly int $intSize = PHP_INT_SIZE,
+        private RandomGeneratorInterface $randomGenerator,
+        private int $intSize = PHP_INT_SIZE
     ) {
     }
 
     /**
-     * @param DateTimeInterface|null $dateTime A date-time instance to use when
+     * @param Hexadecimal|int|string|null $node Unused in this generator
+     * @param int|null $clockSeq Unused in this generator
+     * @param DateTimeInterface $dateTime A date-time instance to use when
      *     generating bytes
      *
-     * @return non-empty-string
+     * @inheritDoc
      */
-    public function generate(
-        Hexadecimal | int | string | null $node = null,
-        ?int $clockSeq = null,
-        ?DateTimeInterface $dateTime = null,
-    ): string {
+    public function generate($node = null, ?int $clockSeq = null, ?DateTimeInterface $dateTime = null): string
+    {
         $time = ($dateTime ?? new DateTimeImmutable('now'))->format('Uv');
 
         if ($time > self::$time || ($dateTime !== null && $time !== self::$time)) {

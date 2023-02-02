@@ -13,17 +13,18 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('ribs', function (Blueprint $table) {
             $table->id();
-            $table->string('CodeBanque');
-            $table->string('Code CodeGuichet');
-            $table->string('NumerodeCompte');
-            $table->string('Clé RIB');
-            $table->string('IBAN');
-            $table->string('BIC');
-            $table->string('NomBank');
+            $table->string('CodeBanque')->nullable();
+            $table->string('CodeGuichet')->nullable();
+            $table->string('NumerodeCompte')->nullable();
+            $table->string('CleRIB')->nullable();
+            $table->string('IBAN')->nullable();
+            $table->string('BIC')->nullable();
+            $table->string('NomBank')->nullable();
             $table->rememberToken();
             $table->timestamps();
+            $table->foreignId('user_id')->constrained('users')->nullable();
         });
     }
 

@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Services\Paiments\PaimentsService;
 use App\Services\User\UserService;
+use App\Services\Iban\IbanServices;
 use Session;
 use App\Models\User;
 use Illuminate\Http\Request;
 
 class UserAuth extends Controller
 {
-    public function __construct(protected UserService $userService, protected PaimentsService $paimentsService)
+    public function __construct(protected IbanServices $ibanServices, protected UserService $userService, protected PaimentsService $paimentsService)
     {
     }
     function userLogin(Request $request)
@@ -52,9 +53,13 @@ class UserAuth extends Controller
         $name =$request->input('user');
         $password =$request->input('password');
         $mail =$request->input('mail');
-        $this->userService->addUser($name, $password, $mail)->save();
-        $rib = User::where('rib', $request->input('email'))->first();
-        return view('operations', ['data' => $rib] ) ;
+        $this->userService->addUser($name, $password, $mail);
+        $this->userService->addCurrentSessionUser($request->input('user'));
+        $user = $this->userService->getCurrentUser(Session('user'));
+        $this->ibanServices->createIban($user->id);
+
+
+        return view('operations', ['data' => $user] ) ;
     }
 
     public function api_operations_login(Request $request){
