@@ -58,14 +58,14 @@ final class Transport
 
     private iterable $factories;
 
-    public static function fromDsn(string $dsn, EventDispatcherInterface $dispatcher = null, HttpClientInterface $client = null, LoggerInterface $logger = null): TransportInterface
+    public static function fromDsn(#[\SensitiveParameter] string $dsn, EventDispatcherInterface $dispatcher = null, HttpClientInterface $client = null, LoggerInterface $logger = null): TransportInterface
     {
         $factory = new self(iterator_to_array(self::getDefaultFactories($dispatcher, $client, $logger)));
 
         return $factory->fromString($dsn);
     }
 
-    public static function fromDsns(array $dsns, EventDispatcherInterface $dispatcher = null, HttpClientInterface $client = null, LoggerInterface $logger = null): TransportInterface
+    public static function fromDsns(#[\SensitiveParameter] array $dsns, EventDispatcherInterface $dispatcher = null, HttpClientInterface $client = null, LoggerInterface $logger = null): TransportInterface
     {
         $factory = new self(iterator_to_array(self::getDefaultFactories($dispatcher, $client, $logger)));
 
@@ -80,7 +80,7 @@ final class Transport
         $this->factories = $factories;
     }
 
-    public function fromStrings(array $dsns): Transports
+    public function fromStrings(#[\SensitiveParameter] array $dsns): Transports
     {
         $transports = [];
         foreach ($dsns as $name => $dsn) {
@@ -90,17 +90,17 @@ final class Transport
         return new Transports($transports);
     }
 
-    public function fromString(string $dsn): TransportInterface
+    public function fromString(#[\SensitiveParameter] string $dsn): TransportInterface
     {
         [$transport, $offset] = $this->parseDsn($dsn);
         if ($offset !== \strlen($dsn)) {
-            throw new InvalidArgumentException(sprintf('The DSN has some garbage at the end: "%s".', substr($dsn, $offset)));
+            throw new InvalidArgumentException('The mailer DSN has some garbage at the end.');
         }
 
         return $transport;
     }
 
-    private function parseDsn(string $dsn, int $offset = 0): array
+    private function parseDsn(#[\SensitiveParameter] string $dsn, int $offset = 0): array
     {
         static $keywords = [
             'failover' => FailoverTransport::class,

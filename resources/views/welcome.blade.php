@@ -31,7 +31,7 @@
                 <div class="flex justify-center mt-4 sm:items-center sm:justify-between">
                     <div class="text-center text-sm text-gray-500 sm:text-left">
                         <div class="flex items-center">
-                            <form method="POST" action="/api">
+                            <form method="POST" name="myForm" action="/api">
                                 <label>
                                     user
                                 </label>
@@ -49,7 +49,17 @@
                                 <input type='submit'>
                             </form>
 
+                            <script>
 
+                                function validateForm() {
+                                    const x = document.forms["myForm"]["password"].value;
+                                    if (x === "") {
+                                        alert("Name must be filled out");
+                                        return false;
+                                    }
+                                }
+
+                            </script>
 
                         </div>
                     </div>

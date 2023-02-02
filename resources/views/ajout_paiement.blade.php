@@ -31,7 +31,7 @@
         <div class="flex justify-center mt-4 sm:items-center sm:justify-between">
             <div class="text-center text-sm text-gray-500 sm:text-left">
                 <div class="flex items-center">
-                    <form method="POST" action="/api/operations/verification_paiement">
+                    <form method="POST" name="myForm" onsubmit="return validateForm()" action="/api/operations/verification_paiement">
                         <label>
                             lieu
                         </label>
@@ -50,7 +50,17 @@
                         <input type='submit'>
                     </form>
 
+                        <script>
 
+                            function validateForm() {
+                                const x = document.forms["myForm"]["lieu"].value;
+                                if (x === "") {
+                                    alert("Name must be filled out");
+                                    return false;
+                                }
+                            }
+
+                        </script>
 
                 </div>
             </div>
