@@ -29,11 +29,11 @@ class RibController extends Controller
         return view('disconnect');
     }
 
-    public function recettes(){
-        $user = $this->userService->getCurrentUser(Session('user'));
-        $paie = $this->paimentsService->getCurrentPaiement($user);
-        return view ('recette', ['paiements' => $paie]);
-    }
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+
 
     public function ajout_paiment(){
         return view('ajout_paiement');
@@ -61,17 +61,33 @@ class RibController extends Controller
     }
 
 
-    public function depenses(){
-        $user = $this->userService->getCurrentUser(Session('user'));
-        $paie = $this->paimentsService->getCurrentPaiement($user);
-        return view ('depense', ['paiements' => $paie]);
+//    public function depenses(){
+//        $user = $this->userService->getCurrentUser(Session('user'));
+//        $paie = $this->paimentsService->getCurrentPaiement($user->id);
+//        return view ('depense', ['paiements' => $paie]);
+//    }
+
+    public function depenses(Request $request){
+        $paie = $this->paimentsService->getCurrentPaiement($request->json('userId'), '<');
+        return response($paie);
+    }
+    public function recettes(Request $request){
+        $paie = $this->paimentsService->getCurrentPaiement($request->json('userId'), '>');
+
+        return response($paie);
     }
 
-    public function paiements(){
-        $user = $this->userService->getCurrentUser(Session('user'));
-        $paie = $this->paimentsService->getCurrentPaiement($user);
-        return view ('paiements', ['paiements' => $paie]);
+    public function paiements(Request $request){
+        $paie = $this->paimentsService->getCurrentPaiement($request->json('userId'));
+
+        return response($paie);
     }
+
+//    public function paiements(){
+//        $user = $this->userService->getCurrentUser(Session('user'));
+//        $paie = $this->paimentsService->getCurrentPaiement($user->id);
+//        return view ('paiements', ['paiements' => $paie]);
+//    }
 
     public function ajout(){
         return "ajout";
