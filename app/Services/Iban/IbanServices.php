@@ -2,13 +2,13 @@
 
 namespace App\Services\Iban;
 
-use App\Models\Paiments;
+use App\Models\Payment;
 use App\Models\User;
 use App\Models\Rib;
 
 class Iban
 {
-    public function addIban(string $codebanque, string $codeguichet, string $numcompte, string $clerib, string $BIC ): mixed
+    public function addIban(string $codebanque, string $codeguichet, string $numcompte, string $clerib, string $BIC ): array
     {
         $user = new Rib();
         $user->CodeBanque= $codebanque ;

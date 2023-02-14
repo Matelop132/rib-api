@@ -11,7 +11,7 @@ class UserService
      * @param int $userId
      * @return mixed
      */
-    public function getCurrentUser(string $userId): mixed
+    public function getCurrentUser(string $userId): string
     {
         return User::where('name', $userId)->first();
 
@@ -21,7 +21,7 @@ class UserService
      * @param string $userEmail
      * @return mixed
      */
-    public function getCurrentMail(string $userEmail): mixed
+    public function getCurrentMail(string $userEmail): string
     {
         return User::where('email', $userEmail)->first();
 
@@ -31,9 +31,10 @@ class UserService
      * @param string $name
      * @return mixed
      */
-    public function addCurrentSessionUser(string $name): mixed
+    public function addCurrentSessionUser(string $name): string
     {
-        return Session::put('user', $name);
+        $nom = Session::put('user', $name);
+        return $nom;
 
     }
 
@@ -41,7 +42,7 @@ class UserService
      * @param string $password
      * @return mixed
      */
-    public function getPasswordUser(string $password): mixed
+    public function getPasswordUser(string $password): string
     {
         return User::where('password', $password)->first();
 

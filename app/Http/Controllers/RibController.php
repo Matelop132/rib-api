@@ -52,42 +52,43 @@ class RibController extends Controller
         $lieu=$request->input('lieu');
         $nombre = floatval($request->input('montant'));
         $datepaie=$request->input('datepaiement');
-
         $this->paimentsService->addCurrentPayment($lieu, $nombre, $datepaie, $user)->save();
         $data = [$request->input('lieu'), $request->input('datepaiement'),$request->input('montant')];
 
 
         return view('verification_paiement', ['data' => $data]);
     }
-
-
-//    public function depenses(){
-//        $user = $this->userService->getCurrentUser(Session('user'));
-//        $paie = $this->paimentsService->getCurrentPaiement($user->id);
-//        return view ('depense', ['paiements' => $paie]);
-//    }
+    
 
     public function depenses(Request $request){
+        $this->userId_verification($request->json('userId'));
+
         $paie = $this->paimentsService->getCurrentPaiement($request->json('userId'), '<');
-        return response($paie);
+        return response($paie, ResponseAlias::HTTP_OK);
     }
     public function recettes(Request $request){
+        $this->userId_verification($request->json('userId'));
         $paie = $this->paimentsService->getCurrentPaiement($request->json('userId'), '>');
 
-        return response($paie);
+        return response($paie, ResponseAlias::HTTP_OK);
     }
 
     public function paiements(Request $request){
-        $paie = $this->paimentsService->getCurrentPaiement($request->json('userId'));
+        $this->userId_verification($request->json('userId'));
 
-        return response($paie);
+        $paie = $this->paimentsService->getCurrentPaiement($request->json('userId'));
+        return response($paie, ResponseAlias::HTTP_OK);
     }
 
-//    public function paiements(){
-//        $user = $this->userService->getCurrentUser(Session('user'));
-//        $paie = $this->paimentsService->getCurrentPaiement($user->id);
-//        return view ('paiements', ['paiements' => $paie]);
-//    }
+
+    public function userId_verification($userId){
+        
+        if(gettype($userId) != 'integer'){
+            return response('non nombre');
+        }
+
+    }
+
 
     public function ajout(){
         return "ajout";
@@ -96,10 +97,5 @@ class RibController extends Controller
     public function retrait(){
         return "retrait";
     }
-
-    public function welcome(){
-        return view("welcome");
-    }
-
 
 }
