@@ -2,27 +2,38 @@
 
 namespace App\Services\Paiments;
 
-use App\Models\Paiments;
+use App\Models\Payment;
 use App\Models\User;
 
 class PaimentsService
 {
-    public function getCurrentPaiement(mixed $paiementId): mixed
+
+    
+    public function getCurrentPaiement(mixed $paiementId, string $sign = null): string
     {
-        return Paiments::where('user_id', $paiementId->id)->get();
+        if ($sign == null){
+            return Payment::where('user_id', $paiementId)->get();
+        }
+
+        return Payment::where('user_id', $paiementId)
+            -> where('amount', $sign, 0)->get();
 
     }
 
-    public function replaceCurrentRib(int $userRib): mixed
+     
+    
+    
+    public function replaceCurrentRib(int $userRib): bool
     {
         return User::where('name', Session('user'))
             ->update(['rib' => $userRib]);
 
     }
+    
 
-    public function addCurrentPayment(string $label, float $amount, $date, mixed $rib): mixed
+    public function addCurrentPayment(string $label, float $amount, $date, mixed $rib): bool
     {
-        $user = new Paiments();
+        $user = new Payment();
         $user->lieu= $label ;
         $user->amount= $amount;
         $user->datepaie=$date;

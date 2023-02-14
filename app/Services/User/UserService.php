@@ -11,36 +11,57 @@ class UserService
      * @param int $userId
      * @return mixed
      */
-    public function getCurrentUser(string $userId): mixed
+    public function getCurrentUser(string $userId): string
     {
         return User::where('name', $userId)->first();
 
     }
 
-    public function getCurrentMail(string $userEmail): mixed
+    /**
+     * @param string $userEmail
+     * @return mixed
+     */
+    public function getCurrentMail(string $userEmail): string
     {
         return User::where('email', $userEmail)->first();
 
     }
 
-    public function addCurrentSessionUser(string $name): mixed
+    /**
+     * @param string $name
+     * @return mixed
+     */
+    public function addCurrentSessionUser(string $name): string
     {
-        return Session::put('user', $name);
+        $nom = Session::put('user', $name);
+        return $nom;
 
     }
 
-    public function getPasswordUser(string $password): mixed
+    /**
+     * @param string $password
+     * @return mixed
+     */
+    public function getPasswordUser(string $password): string
     {
         return User::where('password', $password)->first();
 
     }
 
+    /**
+     * @param string $name
+     * @param string $password
+     * @param string $mail
+     * @return User
+     */
     public function addUser(string $name, string $password, string $mail)
     {
-        $user = new User();
-        $user->name=$name;
-        $user->password=$password;
-        $user->email=$mail;
+        $user = new User([
+            'name'=>$name,
+            'password'=>$password,
+            'email'=>$mail
+           ]);
+        $user->save();
         return $user;
     }
 
